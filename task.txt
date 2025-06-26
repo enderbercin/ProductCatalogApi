@@ -1,0 +1,85 @@
+(-) Ürün Entegrasyonu ve Sanal Katalog
+(-) Fake Store API'den ürün verilerini tüketme
+(-) GET https://fakestoreapi.com/products ile tüm ürünleri çekme
+(-) HttpClient (veya benzeri) kullanarak dış API çağrılarının katmanlı şekilde organize edilmesi
+(-) Hatalı veya zaman aşımına uğrayan istekler için exception handling stratejisi
+(-) İç sistemde in-memory veya session tabanlı katalog oluşturma
+(-) Uygulama başlatıldığında veya ilk erişimde boş bir ürün listesi initialize etme
+(-) Yeni ürün ekleme/güncelleme işlemlerini kendi belleğinizde saklama
+(-) POST /products endpoint'i
+(-) İstek gövdesinden şu alanları alacak:
+(-) name (string): Ürün adı
+(-) threshold (integer): Kritik stok seviyesi
+(-) initialStock (integer): Başlangıç stoğu
+(-) Alınan verilerin validasyonu (örn. threshold ≥ 0, initialStock ≥ threshold)
+(-) Valid geçerliyse, iç sistem kataloğuna yeni ürün kaydı
+(-) Oluşan productCode'u döndürme ve bunu Fake Store API'den gelen verilerdeki karşılığıyla eşleştirme
+(-) Ürün eşleştirme mantığı
+(-) Fake Store ürünlerinin her birine özgü bir productCode atama
+(-) İç sistem ürünleriyle bu kod üzerinden iki yönlü eşleştirme (mapping)
+(-) Kritik Stok Tespiti
+(-) GET /products/low-stock endpoint'i
+(-) İç sistem kataloğundaki tüm ürünleri tarayıp, stock < threshold olanları filtreleme
+(-) Filtrelenen ürünler listesini JSON formatında döndürme
+(-) Pagination ve limit-offset parametreleri eklenebilirlik tehdidine hazırlıklı olma
+(-) Sipariş Otomasyonu
+(-) POST /orders/check-and-place endpoint'i
+(-) İç sistemden kritik stoklu ürün listesini alır (3. maddeden faydalanır)
+(-) Her bir kritik ürüne yönelik satıcı (Fake Store API) verilerini tekrar çekme
+(-) Gerekirse ayrı bir GET /products/:productCode çağrısı
+(-) En uygun fiyatlı satıcı seçimi
+(-) Gelen fiyatları karşılaştıran, en düşük fiyatlı kaydı seçen algoritma
+(-) Eşit fiyat durumunda stok miktarı veya teslim süresi gibi ikincil kriterler tanımlanabilir
+(-) Seçilen satıcı için sipariş oluşturma
+(-) Gerçek sipariş endpoint'i yoksa, iç sistemde "order" nesnesi yaratıp kayıt etme
+(-) Başarılı/başarısız sonuçları toplu veya ayrı ayrı döndürme
+(-) API Güvenliği
+(-) Rate Limiting – Fixed Window Limiti
+(-) Özellikle POST /orders/* ve POST /products endpoint'lerine istek sayısını sabit pencerede sınırlandırma
+(-) Redis veya benzeri bellekte sayaç tutma
+(-) Limit aşıldığında uygun HTTP 429 yanıtı dönme
+(-) CSRF Koruması
+(-) Form tabanlı istekler için anti-CSRF token üretimi ve doğrulaması
+(-) Her kullanıcı/session için benzersiz token saklama ve gelen istekle eşleştirme
+(-) XSS Koruması
+(-) İstemciye veya HTML render edilen sayfalara gönderilen tüm metinleri sanitize etme
+(-) Çıktı encode işlemleri (ör. <, >, & karakterlerini dönüştürme)
+(-) Şablon motoru (e.g. Thymeleaf, Handlebars) otomatik kaçış mekanizmalarından faydalanma
+(-) Bonus Görev – Stokları Roma Rakamı ile Gösterme
+(-) JavaScript ile Roma rakamı dönüşüm fonksiyonu
+(-) Sıfır veya negatif değerlerde özel durum (örn. "N/A")
+(-) Temel dönüşüm tablosu:
+(-) 1 → I, 4 → IV, 5 → V, 9 → IX, 10 → X, 40 → XL, 50 → L, 90 → XC, 100 → C, 400 → CD, 500 → D, 900 → CM, 1000 → M
+(-) Algoritma adımları:
+(-) Stok miktarını al
+(-) En büyük değerden başlayarak bölme ve kalanla devam et
+(-) Her bölüm adımında sembol dizisini biriktirme
+(-) HTML şablonunda:
+(-) <span>Stok: <script>document.write(toRoman(stock));</script> adet</span>
+(-) Kütüphane veya hazır kod kullanılmadan, saf JS ile implementasyon
+(-) Değerlendirme Kriterleri
+(-) Katmanlı ve genişletilebilir mimari
+(-) Controller / Service / Repository / ExternalClient katmanlarının ayrılması
+(-) SOLID prensiplerine uyum
+(-) Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion
+(-) HttpClient ile dış API kullanımı
+(-) Bağımlılık enjeksiyonu, retry politikaları, circuit breaker düşünülmüş olması
+(-) Algoritmik problem çözme
+(-) En uygun fiyatlı ürünü seçme
+(-) Roma dönüşüm algoritması
+(-) Exception Handling
+(-) Hata sınıflandırma (4xx vs 5xx), global exception handler, kullanıcıya açıklayıcı mesaj
+(-) Açıklayıcı README.md
+(-) Proje açıklaması ve yapı
+(-) Adım adım çalıştırma talimatları
+(-) Örnek API istek/yanıtları
+(-) Fake Store API ile eşleşme detayı
+(-) Bonus görevin nasıl çözüldüğü
+(-) Teslimat
+(-) Kodun GitHub'a yüklenmesi
+(-) Ana dalda (main/master) temiz commit geçmişi
+(-) README.md içeriği
+(-) Proje açıklaması ve nasıl çalıştığı
+(-) Tüm API endpoint'lerinin örnek istek/yanıt formatları
+(-) Fake Store API entegrasyon detayları (productCode eşleştirmesi vb.)
+(-) Bonus görev: Roma rakamı dönüşüm algoritmasının açıklaması ve örnek çıktı 
