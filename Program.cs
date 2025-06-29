@@ -14,7 +14,6 @@ builder.Services.AddSwaggerGen();
 // HttpClient configuration
 builder.Services.AddHttpClient<IFakeStoreClient, FakeStoreClient>();
 
-// CORS ekle
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -41,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(); // EN ÜSTE ALINDI
+app.UseCors(); 
 
 app.UseMiddleware<RateLimitingMiddleware>();
 app.UseMiddleware<CsrfProtectionMiddleware>();
