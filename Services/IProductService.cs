@@ -16,5 +16,7 @@ namespace ProductCatalogApi.Services
         Task<ProductDto> CreateProductFromExternalAsync(int fakeStoreId);
         Task<string?> GetProductCodeByFakeStoreIdAsync(int fakeStoreId);
         Task<int?> GetFakeStoreIdByProductCodeAsync(string productCode);
+        Task<ProductDto?> DecreaseStockAsync(string productCode, int amount);
+        Task<ProductDto?> IncreaseStockAsync(string productCode, int amount);
     }
 } 

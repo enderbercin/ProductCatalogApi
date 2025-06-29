@@ -27,8 +27,8 @@ builder.Services.AddCors(options =>
 });
 
 // Dependency Injection
-builder.Services.AddScoped<IProductRepository, InMemoryProductRepository>();
-builder.Services.AddScoped<IOrderRepository, InMemoryOrderRepository>();
+builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 

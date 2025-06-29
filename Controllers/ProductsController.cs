@@ -229,5 +229,15 @@ namespace ProductCatalogApi.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        // POST api/products/{productCode}/decrease-stock
+        [HttpPost("{productCode}/decrease-stock")]
+        public async Task<IActionResult> DecreaseStock(string productCode, [FromQuery] int amount = 1)
+        {
+            var updated = await _productService.DecreaseStockAsync(productCode, amount);
+            if (updated == null)
+                return NotFound($"Product with code {productCode} not found");
+            return Ok(updated);
+        }
     }
 } 

@@ -67,5 +67,29 @@ namespace ProductCatalogApi.Repositories
                 return Task.FromResult(_products.Any(p => p.ProductCode == productCode));
             }
         }
+
+        public Task<Product?> DecreaseStockAsync(string productCode, int amount)
+        {
+            lock (_lock)
+            {
+                var product = _products.FirstOrDefault(p => p.ProductCode == productCode);
+                if (product == null) return Task.FromResult<Product?>(null);
+                product.CurrentStock = Math.Max(0, product.CurrentStock - amount);
+                product.UpdatedAt = DateTime.UtcNow;
+                return Task.FromResult<Product?>(product);
+            }
+        }
+
+        public Task<Product?> IncreaseStockAsync(string productCode, int amount)
+        {
+            lock (_lock)
+            {
+                var product = _products.FirstOrDefault(p => p.ProductCode == productCode);
+                if (product == null) return Task.FromResult<Product?>(null);
+                product.CurrentStock += amount;
+                product.UpdatedAt = DateTime.UtcNow;
+                return Task.FromResult<Product?>(product);
+            }
+        }
     }
 } 

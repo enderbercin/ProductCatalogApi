@@ -118,21 +118,25 @@ namespace ProductCatalogApi.Services
                     SupplierName = supplierName,
                     Price = bestPrice,
                     Quantity = quantity,
-                    Status = OrderStatus.Pending,
-                    CreatedAt = DateTime.UtcNow
+                    Status = OrderStatus.Completed, // Siparişi direkt tamamlandı olarak işaretle
+                    CreatedAt = DateTime.UtcNow,
+                    CompletedAt = DateTime.UtcNow // Sipariş tamamlandı
                 };
 
                 await _orderRepository.CreateAsync(order);
 
-                _logger.LogInformation("Created order {OrderId} for product {ProductCode} with quantity {Quantity} at price {Price}",
-                    orderId, product.ProductCode, quantity, bestPrice);
+                // Sipariş tamamlandığında stokları artır
+                await _productService.IncreaseStockAsync(product.ProductCode, quantity);
+
+                _logger.LogInformation("Created and completed order {OrderId} for product {ProductCode} with quantity {Quantity} at price {Price}. Stock increased by {Quantity}",
+                    orderId, product.ProductCode, quantity, bestPrice, quantity);
 
                 return new OrderResult
                 {
                     Success = true,
                     OrderId = orderId,
                     ProductCode = product.ProductCode,
-                    Message = "Order created successfully",
+                    Message = $"Order completed successfully. Stock increased by {quantity}",
                     Price = bestPrice,
                     SupplierName = supplierName
                 };

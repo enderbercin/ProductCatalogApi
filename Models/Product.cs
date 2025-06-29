@@ -26,6 +26,18 @@ namespace ProductCatalogApi.Models
         
         // Fake Store API ile eşleştirme için
         public int? FakeStoreId { get; set; }
+        
+        public string? Description { get; set; }
+        
+        public string? Category { get; set; }
+        
+        public string? Image { get; set; }
+        
+        public decimal? Price { get; set; }
+        
+        public double? RatingRate { get; set; }
+        
+        public int? RatingCount { get; set; }
     }
 
     public class ProductDto
@@ -35,10 +47,17 @@ namespace ProductCatalogApi.Models
         public int Threshold { get; set; }
         public int InitialStock { get; set; }
         public int CurrentStock { get; set; }
+        public int? FakeStoreId { get; set; }
+        public string? Description { get; set; }
+        public string? Category { get; set; }
+        public string? Image { get; set; }
+        public decimal? Price { get; set; }
+        public double? RatingRate { get; set; }
+        public int? RatingCount { get; set; }
+        public bool IsMatched { get; set; } = false;
+        public string StockInRoman { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public int? FakeStoreId { get; set; }
-        public string StockInRoman { get; set; } = string.Empty;
     }
 
     public class CreateProductRequest
@@ -54,5 +73,7 @@ namespace ProductCatalogApi.Models
         [Required]
         [Range(0, int.MaxValue)]
         public int InitialStock { get; set; }
+        
+        public int? FakeStoreProductId { get; set; }
     }
 } 

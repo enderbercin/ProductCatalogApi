@@ -4,3 +4,46 @@ GET {{ProductCatalogApi_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+### Tüm ürünleri getir
+GET {{ProductCatalogApi_HostAddress}}/api/products
+Accept: application/json
+
+###
+
+### Yeni ürün ekle
+POST {{ProductCatalogApi_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Test Ürün",
+  "threshold": 5,
+  "initialStock": 20
+}
+
+###
+
+### Fake Store ürünü ile eşleştirerek yeni ürün ekle
+POST {{ProductCatalogApi_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Fake Store Ürünü",
+  "threshold": 10,
+  "initialStock": 50,
+  "fakeStoreProductId": 1
+}
+
+###
+
+### Kritik stoklu ürünleri getir
+GET {{ProductCatalogApi_HostAddress}}/api/products/low-stock
+Accept: application/json
+
+###
+
+### Fake Store ürünlerini getir
+GET {{ProductCatalogApi_HostAddress}}/api/products/external
+Accept: application/json
+
+###

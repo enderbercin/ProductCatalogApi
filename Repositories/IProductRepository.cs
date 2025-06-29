@@ -10,5 +10,7 @@ namespace ProductCatalogApi.Repositories
         Task<Product> UpdateAsync(Product product);
         Task<List<Product>> GetLowStockProductsAsync();
         Task<bool> ExistsAsync(string productCode);
+        Task<Product?> DecreaseStockAsync(string productCode, int amount);
+        Task<Product?> IncreaseStockAsync(string productCode, int amount);
     }
 } 
